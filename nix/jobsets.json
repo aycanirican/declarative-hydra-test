@@ -11,7 +11,7 @@
     "keepnr": 1,
     "inputs": {
         "src": { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git", "emailresponsible": false },
-        "branches": { "type": "githubAPI", "value": "/repos/aycanirican/declarative-hydra-test/branches", "emailresponsible": false }
+        "branches": { "type": "githubAPI", "value": "/repos/aycanirican/declarative-hydra-test/branches", "emailresponsible": false },
         "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs.git release-16.09", "emailresponsible": false }
     }
 }
