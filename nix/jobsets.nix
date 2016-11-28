@@ -1,4 +1,4 @@
-{ declInput, branches }:
+{ nixpkgs, declInput, branches }:
 
 let pkgs = (import nixpkgs {});
     branches' = builtins.trace branches (builtins.fromJSON branches);
