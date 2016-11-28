@@ -1,6 +1,6 @@
 { declInput, branches }:
 
-let pkgs = (import ../release.nix {}).pkgs;
+let pkgs = (import nixpkgs {});
     branches' = builtins.trace branches (builtins.fromJSON branches);
     branchNames = map (i: i.name) branches';
 
