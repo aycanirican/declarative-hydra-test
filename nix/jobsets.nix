@@ -4,7 +4,7 @@ let pkgs = (import <nixpkgs> {});
     branches' = builtins.trace branches (builtins.fromJSON branches);
     branchNames = map (i: i.name) branches';
 
-    mkJobsetsFromBranch = branch: ''
+    branchToJobset = branch: ''
       "declarative-${branch}": {
         ${boilerplate},
         "description": "declarative ${branch}",
