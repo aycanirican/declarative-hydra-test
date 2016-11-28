@@ -2,15 +2,15 @@
     "enabled": 1,
     "hidden": false,
     "description": "Jobsets",
-    "nixexprinput": "declarative",
+    "nixexprinput": "src",
     "nixexprpath": "nix/jobsets.nix",
     "checkinterval": 60,
     "schedulingshares": 100,
     "enableemail": false,
     "emailoverride": "",
-    "keepnr": 10,
+    "keepnr": 1,
     "inputs": {
-        "declarative": { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git", "emailresponsible": false },
+        "src": { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git", "emailresponsible": false },
         "branches": { "type": "githubAPI", "value": "/repos/aycanirican/declarative-hydra-test/branches", "emailresponsible": false }
     }
 }

@@ -8,7 +8,7 @@ let pkgs = (import <nixpkgs> {});
       "declarative-${branch}": {
         ${boilerplate},
         "description": "declarative ${branch}",
-        "nixexprinput": "declarative",
+        "nixexprinput": "src",
         "nixexprpath": "hydra.nix",
         "inputs": {
           ${mkInputs branch}
@@ -27,7 +27,7 @@ let pkgs = (import <nixpkgs> {});
     '';
 
     mkInputs = branch: ''
-      "declarative": { "type": "git", "value": "git@github.com:aycanirican/declarative-hydra-test ${branch}", "emailresponsible": false }
+      "src": { "type": "git", "value": "git@github.com:aycanirican/declarative-hydra-test ${branch}", "emailresponsible": false }
     '';
 
     jobsetBranches = pkgs.lib.concatMapStringsSep "," branchToJobset branchNames;
