@@ -1,7 +1,8 @@
-{ pkgs ? (import <nixpkgs> {})
+{ nixpkgs
 }:
 
 let 
+  pkgs = import nixpkgs {};
   jobs = {
     package = pkgs.stdenv.mkDerivation {
       name = "declarative";
