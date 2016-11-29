@@ -9,18 +9,18 @@ let pkgs = (import nixpkgs {});
 
     mkInputs = branch: baseNixpkgs: ''
       "src":     { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false },
-      "nixpkgs": { "type": "git", "value": ${baseNixpkgs}, "emailresponsible": false }
+      "nixpkgs": { "type": "git", "value": "${baseNixpkgs}", "emailresponsible": false }
     '';
 
-    boilerplate = ''
+    boilerplate = 
+    ''
       "enabled": 1,
       "hidden": false,
       "checkinterval": 5,
       "schedulingshares": 100,
       "enableemail": false,
       "emailoverride": "",
-      "keepnr": 1
-    '';
+      "keepnr": 1'';
 
     branchToJobset = branch: ''
       "${branch}-stable": {
