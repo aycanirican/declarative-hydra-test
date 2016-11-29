@@ -1,7 +1,7 @@
 { nixpkgs, declInput, branches }:
 
 let pkgs = (import nixpkgs {});
-    stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-16-09";
+    stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-16.09";
     upstreamNixpkgs   = "https://github.com/NixOS/nixpkgs.git master";
 
     branches' = builtins.trace branches (builtins.fromJSON branches);
