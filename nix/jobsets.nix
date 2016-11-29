@@ -1,19 +1,15 @@
 { nixpkgs, declInput, branches }:
 
 let pkgs = (import nixpkgs {});
+    stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-16-09";
+    upstreamNixpkgs   = "https://github.com/NixOS/nixpkgs.git";
+
     branches' = builtins.trace branches (builtins.fromJSON branches);
     branchNames = map (i: i.name) branches';
 
-    branchToJobset = branch: ''
-      "declarative-${branch}": {
-        ${boilerplate},
-        "description": "declarative ${branch}",
-        "nixexprinput": "src",
-        "nixexprpath": "nix/hydra.nix",
-        "inputs": {
-          ${mkInputs branch}
-        }
-      }
+    mkInputs = branch: baseNixpkgs: ''
+      "src":     { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false },
+      "nixpkgs": { "type": "git", "value": "${baseNixpkgs}", "emailresponsible": false }
     '';
 
     boilerplate = ''
@@ -26,9 +22,25 @@ let pkgs = (import nixpkgs {});
       "keepnr": 1
     '';
 
-    mkInputs = branch: ''
-      "src": { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false },
-      "nixpkgs": { "type": "git", "value": "https://github.com/NixOS/nixpkgs-channels.git nixos-16.09", "emailresponsible": false }
+    branchToJobset = branch: ''
+      "${branch}-stable": {
+        ${boilerplate},
+        "description": "Branch with stable nixpkgs: ${branch}",
+        "nixexprinput": "src",
+        "nixexprpath": "nix/hydra.nix",
+        "inputs": {
+          ${mkInputs branch stableNixpkgs}
+        }
+      }
+      "${branch}-unstable": {
+        ${boilerplate},
+        "description": "Branch with unstable nixpkgs: ${branch}",
+        "nixexprinput": "src",
+        "nixexprpath": "nix/hydra.nix",
+        "inputs": {
+          ${mkInputs branch upstreamNixpkgs}
+        }
+      }
     '';
 
     jobsetBranches = pkgs.lib.concatMapStringsSep "," branchToJobset branchNames;
@@ -40,7 +52,7 @@ in {
     EOF
     cat > $out <<EOF
     {
-    ${jobsetBranches}
+      ${jobsetBranches}
     }
     EOF
   '';
