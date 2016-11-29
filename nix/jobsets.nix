@@ -2,14 +2,14 @@
 
 let pkgs = (import nixpkgs {});
     stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-16-09";
-    upstreamNixpkgs   = "https://github.com/NixOS/nixpkgs.git";
+    upstreamNixpkgs   = "https://github.com/NixOS/nixpkgs.git master";
 
     branches' = builtins.trace branches (builtins.fromJSON branches);
     branchNames = map (i: i.name) branches';
 
     mkInputs = branch: baseNixpkgs: ''
       "src":     { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false },
-      "nixpkgs": { "type": "git", "value": "${baseNixpkgs}", "emailresponsible": false }
+      "nixpkgs": { "type": "git", "value": ${baseNixpkgs}, "emailresponsible": false }
     '';
 
     boilerplate = ''
