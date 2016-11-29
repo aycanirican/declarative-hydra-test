@@ -31,7 +31,7 @@ let pkgs = (import nixpkgs {});
         "inputs": {
           ${mkInputs branch stableNixpkgs}
         }
-      }
+      },
       "${branch}-unstable": {
         ${boilerplate},
         "description": "Branch with unstable nixpkgs: ${branch}",
