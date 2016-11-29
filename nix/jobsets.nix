@@ -9,7 +9,7 @@ let pkgs = (import nixpkgs {});
         ${boilerplate},
         "description": "declarative ${branch}",
         "nixexprinput": "src",
-        "nixexprpath": "hydra.nix",
+        "nixexprpath": "nix/hydra.nix",
         "inputs": {
           ${mkInputs branch}
         }
