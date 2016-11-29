@@ -27,7 +27,7 @@ let pkgs = (import nixpkgs {});
     '';
 
     mkInputs = branch: ''
-      "src": { "type": "git", "value": "git@github.com:aycanirican/declarative-hydra-test ${branch}", "emailresponsible": false }
+      "src": { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false }
       "nixpkgs": { "type": "git", "value": "git@github.com:NixOS/nixpkgs-channels 16.09", "emailresponsible": false }
     '';
 
