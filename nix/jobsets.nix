@@ -29,8 +29,6 @@ let _pkgs = (import nixpkgs {});
 
     jobsets = _pkgs.lib.mapAttrs (num: info: PRToJobset num info) prs;
 
-in {
-  jobsets = _pkgs.writeText "jobsets.json" jobsets;
-}
+in { jobsets = _pkgs.writeText "jobsets.json" (builtins.toJSON jobsets); }
     
 
