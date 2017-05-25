@@ -1,61 +1,40 @@
-{ nixpkgs, declInput, branches }:
+{ prsJSON, nixpkgs, src }:
 
-let pkgs = (import nixpkgs {});
-    stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-16.09";
-    upstreamNixpkgs   = "https://github.com/NixOS/nixpkgs.git master";
+let _pkgs = (import nixpkgs {});
+    stableNixpkgs = "https://github.com/NixOS/nixpkgs-channels.git nixos-17.03";
+    prs = builtins.fromJSON (builtins.readFile prsJSON);
 
-    branches' = builtins.trace branches (builtins.fromJSON branches);
-    branchNames = map (i: i.name) branches';
-
-    mkInputs = branch: baseNixpkgs: ''
-      "src":     { "type": "git", "value": "https://github.com/aycanirican/declarative-hydra-test.git ${branch}", "emailresponsible": false },
+    mkInputs = info: baseNixpkgs: ''
+      "src":     { "type": "git", "value": "https://github.com/${info.head.repo.owner.login}/${info.head.repo.name}.git ${info.head.ref}", "emailresponsible": false },
       "nixpkgs": { "type": "git", "value": "${baseNixpkgs}", "emailresponsible": false }
     '';
 
-    boilerplate = 
-    ''
+    boilerplate = ''
       "enabled": 1,
       "hidden": false,
       "checkinterval": 5,
       "schedulingshares": 100,
       "enableemail": false,
       "emailoverride": "",
-      "keepnr": 1'';
-
-    branchToJobset = branch: ''
-      "${branch}-stable": {
+      "keepnr": 1
+    '';
+     
+    PRToJobset = num: info: ''
+      "PR-${num}": {
         ${boilerplate},
-        "description": "Branch with stable nixpkgs: ${branch}",
+        "description": "#${num}",
         "nixexprinput": "src",
         "nixexprpath": "nix/hydra.nix",
         "inputs": {
-          ${mkInputs branch stableNixpkgs}
-        }
-      },
-      "${branch}-unstable": {
-        ${boilerplate},
-        "description": "Branch with unstable nixpkgs: ${branch}",
-        "nixexprinput": "src",
-        "nixexprpath": "nix/hydra.nix",
-        "inputs": {
-          ${mkInputs branch upstreamNixpkgs}
+          ${mkInputs info stableNixpkgs}
         }
       }
     '';
 
-    jobsetBranches = pkgs.lib.concatMapStringsSep "," branchToJobset branchNames;
+    jobsets = _pkgs.lib.mapAttrs (num: info: PRToJobset num info) prs;
 
 in {
-  jobsets = pkgs.runCommand "spec.json-jobsets" { preferLocalBuild=true; } ''
-    cat <<EOF
-      ${builtins.toJSON branches'}
-    EOF
-    cat > $out <<EOF
-    {
-      ${jobsetBranches}
-    }
-    EOF
-  '';
+  jobsets = _pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);
 }
     
 
