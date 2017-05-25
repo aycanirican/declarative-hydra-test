@@ -1,14 +1,14 @@
 {
     "enabled": 1,
     "hidden": false,
-    "description": "Jobsets",
+    "description": "PR Jobsets",
     "nixexprinput": "src",
     "nixexprpath": "nix/jobsets.nix",
     "checkinterval": 60,
     "schedulingshares": 100,
     "enableemail": false,
     "emailoverride": "",
-    "keepnr": 1,
+    "keepnr": 3,
     "inputs": {
         "src":     { "type": "git",         "value": "https://github.com/aycanirican/declarative-hydra-test.git", "emailresponsible": false },
         "prsJSON": { "type": "githubpulls", "value": "aycanirican declarative-hydra-test",                        "emailresponsible": false },
