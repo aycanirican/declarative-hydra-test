@@ -26,7 +26,6 @@ let _pkgs = (import nixpkgs {});
           nixexprpath = "nix/hydra.nix";
           inputs = mkInputs info stableNixpkgs;
         };
-    };
 
     jobsets = _pkgs.lib.mapAttrs (num: info: PRToJobset num info) prs;
 
